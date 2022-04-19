@@ -10,6 +10,8 @@ import {
 } from "react-icons/md";
 import { categories } from "../utils/data";
 import Loader from "./Loader";
+import { storage } from "../firbase";
+import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 function CreateContainer() {
   const [title, setTitle] = useState("");
@@ -23,7 +25,40 @@ function CreateContainer() {
   const [isLoading, setIsLoading] = useState(false);
   const [{ foodItems }, dispatch] = useStateValue();
 
-  const uploadImage = () => {};
+  const uploadImage = () => {
+    const imageFile = e.target.files[0];
+    const storageRef = ref(storage, `Images/${Date.now()}-${imageFile.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const uploadProgress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      },
+      (error) => {
+        console.log(error);
+        setFields(true);
+        setMsg("Error While Uploading Try Agian");
+        setAlertStatus("danger");
+        setTimeout(() => {
+          setFields(false);
+          setIsLoading(false);
+        }, 400);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+          setImageAsset(downloadUrl);
+          setIsLoading(false);
+          setFields(true);
+          setMsg("image upload Secsseful");
+          setAlertStatus("success");
+          setTimeout(() => {
+            setFields(false);
+          }, 4000);
+        });
+      }
+    );
+  };
   const daleteImage = () => {};
   const saveDetails = () => {};
 
