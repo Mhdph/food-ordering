@@ -11,7 +11,7 @@ import {
 import { categories } from "../utils/data";
 import Loader from "./Loader";
 import { storage } from "../firbase";
-import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 function CreateContainer() {
   const [title, setTitle] = useState("");
@@ -25,7 +25,7 @@ function CreateContainer() {
   const [isLoading, setIsLoading] = useState(false);
   const [{ foodItems }, dispatch] = useStateValue();
 
-  const uploadImage = () => {
+  const uploadImage = (e) => {
     const imageFile = e.target.files[0];
     const storageRef = ref(storage, `Images/${Date.now()}-${imageFile.name}`);
     const uploadTask = uploadBytesResumable(storageRef, imageFile);
