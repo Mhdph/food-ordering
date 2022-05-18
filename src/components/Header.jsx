@@ -12,7 +12,8 @@ import { actionType } from "../context/reducer";
 function Header() {
   const firebaseAuth = getAuth(app);
   const provider = new GoogleAuthProvider();
-  const [{ user }, dispatch] = useStateValue();
+
+  const [{ user, cartShow, cartItems }, dispatch] = useStateValue();
 
   const [isMenu, setIsMenu] = useState(false);
 
@@ -87,10 +88,10 @@ function Header() {
               initial={{ opacity: 0, scale: 0.6 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.6 }}
-              className="w-40 bg-gray-50 shadow-xl top-[42px] right-0 rounded-lg flex flex-col absolute "
+              className="w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-12 right-0"
             >
               {user && user.email === "mahdihood0@gmail.com" && (
-                <Link>
+                <Link to={"/CreateContainer"}>
                   <p className="px-4 py-2 flex items-center gap-3 cursor-pointer  hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor">
                     New Item <MdAdd />
                   </p>
@@ -135,17 +136,19 @@ function Header() {
               exit={{ opacity: 0, scale: 0.6 }}
               className="w-40 bg-gray-50 shadow-xl top-[42px] right-0 rounded-lg flex flex-col absolute "
             >
-              {user && user.email === "random@gmail.com" && (
-                <Link>
+              {user && user.email === "mahdihood0@gmail.com" && (
+                <Link to={"/CreateContainer"}>
                   <p className="px-4 py-2 flex items-center gap-3 cursor-pointer  hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor">
                     New Item <MdAdd />
                   </p>
                 </Link>
               )}
               <ul className="flex flex-col">
-                <li className="text-base px-4 py-2 text-textColor cursor-pointer transition-all ease-out hover:text-headingColor  hover:bg-slate-100 ">
-                  Home
-                </li>
+                <Link to="/">
+                  <li className="text-base px-4 py-2 text-textColor cursor-pointer transition-all ease-out hover:text-headingColor  hover:bg-slate-100 ">
+                    Home
+                  </li>
+                </Link>
                 <li className="text-base px-4 py-2 text-textColor cursor-pointer transition-all ease-out hover:text-headingColor  hover:bg-slate-100 ">
                   Menu
                 </li>
