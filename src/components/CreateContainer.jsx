@@ -11,7 +11,13 @@ import {
 import { categories } from "../utils/data";
 import Loader from "./Loader";
 import { storage } from "../firbase";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { saveItem } from "../utils/firebaseFunctions";
 
 function CreateContainer() {
   const [title, setTitle] = useState("");
@@ -59,11 +65,73 @@ function CreateContainer() {
       }
     );
   };
-  const daleteImage = () => {};
-  const saveDetails = () => {};
+  const daleteImage = () => {
+    setIsLoading(true);
+    const deleteRef = ref(storage, imageAsset);
+    deleteObject(deleteRef).then(() => {
+      setImageAsset(null);
+      setIsLoading(false);
+      setFields(true);
+      setMsg("Image deleted Successfully");
+      setAlertStatus("success");
+      setTimeout(() => {
+        setFields(false);
+      }, 4000);
+    });
+  };
+  const saveDetails = () => {
+    setIsLoading(true);
+    try {
+      if (!title || !calories || !imageAsset || !price || !categories) {
+        setFields(true);
+        setMsg("Required Field Cant be Empty");
+        setAlertStatus("danger");
+        setTimeout(() => {
+          setFields(false);
+          setIsLoading(false);
+        }, 4000);
+      } else {
+        const data = {
+          id: `${Date.now()}`,
+          title: title,
+          imageUrl: imageAsset,
+          categories: category,
+          calories: calories,
+          qty: 1,
+          price: price,
+        };
+        saveItem(data);
+        setIsLoading(false);
+        setFields(true);
+        clearData();
+        setMsg("Data Uploaded Successsfully");
+        setAlertStatus("success");
+        setTimeout(() => {
+          setFields(false);
+        }, 4000);
+      }
+    } catch (error) {
+      console.log(error);
+      setFields(true);
+      setMsg("Error While Uploading Try Agian");
+      setAlertStatus("danger");
+      setTimeout(() => {
+        setFields(false);
+        setIsLoading(false);
+      }, 400);
+    }
+  };
+
+  const clearData = () => {
+    setTitle("");
+    setImageAsset(null);
+    setCalories("");
+    setPrice("");
+    setCalories("Select Category");
+  };
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center">
+    <div className="w-full min-h-screen flex items-center justify-center ">
       <div className="w-[90%] md:w-[50%] border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center gap-4">
         {" "}
         {fields && (
@@ -140,7 +208,7 @@ function CreateContainer() {
                   <div className="relative h-full">
                     <img
                       src={imageAsset}
-                      alt="uploaded image"
+                      alt="uploaded"
                       className="w-full h-full object-cover"
                     />
                     <button
