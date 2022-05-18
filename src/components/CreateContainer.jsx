@@ -17,7 +17,8 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { saveItem } from "../utils/firebaseFunctions";
+import { getAllfoodItems, saveItem } from "../utils/firebaseFunctions";
+import { actionType } from "../context/reducer";
 
 function CreateContainer() {
   const [title, setTitle] = useState("");
@@ -120,6 +121,7 @@ function CreateContainer() {
         setIsLoading(false);
       }, 400);
     }
+    fetchData();
   };
 
   const clearData = () => {
@@ -127,7 +129,16 @@ function CreateContainer() {
     setImageAsset(null);
     setCalories("");
     setPrice("");
-    setCalories("Select Category");
+    setCategory("Select Category");
+  };
+
+  const fetchData = async () => {
+    await getAllfoodItems().then((data) => {
+      dispatch({
+        type: actionType.SET_FOOD_ITEMS,
+        foodItems: data,
+      });
+    });
   };
 
   return (
