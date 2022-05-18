@@ -59,10 +59,10 @@ function HomeContainer() {
                   src={n.imageSrc}
                   alt="I1"
                 />
-                <p className="text-sm md:text-[18px] lg:text-[12px] xl:text-base  font-semibold text-textColor mt-2 xl:mt-4">
+                <p className="text-sm md:text-[12px] lg:text-[12px] xl:text-base  font-semibold text-textColor mt-2 xl:mt-4">
                   {n.name}
                 </p>
-                <p className="text-[1rem] md:text-[1rem] lg:text-[12px] xl:text-base font-semibold text-lighttextGray my-1 xl:my-3">
+                <p className="text-[12px] md:text-[12px] lg:text-[12px] xl:text-base font-semibold text-lighttextGray my-1 xl:my-3">
                   {n.decp}
                 </p>
                 <p className="text-sm font-semibold text-headingColor">
