@@ -5,17 +5,17 @@ import NotFound from "../img/NotFound.svg";
 import { useStateValue } from "../context/StateProvider";
 import { actionType } from "../context/reducer";
 
-function RowContainer({ flag, data, scrollValue }) {
+const RowContainer = ({ flag, data, scrollValue }) => {
   const rowContainer = useRef();
 
   const [items, setItems] = useState([]);
 
   const [{ cartItems }, dispatch] = useStateValue();
 
-  const addtocart = (item) => {
-    setItems([...cartItems, item]);
+  const addtocart = () => {
     dispatch({
       type: actionType.SET_CART_ITEMS,
+
       cartItems: items,
     });
     localStorage.setItem("cartItems", JSON.stringify(items));
@@ -61,7 +61,6 @@ function RowContainer({ flag, data, scrollValue }) {
                 onClick={() => setItems([...cartItems, item])}
               >
                 <MdShoppingBasket className="text-white" />
-                12
               </motion.div>
             </div>
 
@@ -82,7 +81,7 @@ function RowContainer({ flag, data, scrollValue }) {
         ))
       ) : (
         <div className="w-full flex flex-col items-center justify-center">
-          <img src={NotFound} alt="" className="h-[340px]" />
+          <img src={NotFound} alt="" className="h-340" />
           <p className="text-xl text-headingColor font-semibold my-2">
             Items Not Available
           </p>
@@ -90,6 +89,6 @@ function RowContainer({ flag, data, scrollValue }) {
       )}
     </div>
   );
-}
+};
 
 export default RowContainer;
